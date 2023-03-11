@@ -1,0 +1,12 @@
+{
+  "name": "accessible-menu",
+  "version": "1.0.0",
+  "description": "This is an implementation of the APG [Disclosure Navigation Menu with Top-Level Links](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation-hybrid/ ) menu pattern with some changes to allow submenus to open on hover on desktop and to add a hamburger menu toggle for smaller screens.",
+  "main": "accessible-menu.js",
+  "scripts": {
+    "build:css": "node-sass --output-style expanded accessible-menu.scss accessible-menu.css"
+  },
+  "devDependencies": {
+    "node-sass": "^8.0.0"
+  }
+}
