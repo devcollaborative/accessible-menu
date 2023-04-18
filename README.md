@@ -11,47 +11,6 @@ This is an implementation of the [Disclosure Navigation Menu with Top-Level Link
 
 ## Usage
 
-### HTML Structure
-
-Your menu should match the following structure:
-
-```html
-<nav id="menu" aria-label="Main navigation">
-  <button id="menu-toggle" aria-expanded="false" aria-controls="menu-toggle-container">
-    <svg height="32" width="32" viewBox="0 0 32 32" fill="currentColor" class="menu-toggle--icon">
-      <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"></path>
-    </svg>
-    <div class="menu-toggle--label">Menu</div>
-  </button>
-
-  <ul>
-    <li><a href="#">Link 1</a></li>
-    <li><a href="#">Link 2</a></li>
-
-    <li class="menu-item-has-children">
-      <a href="#">Link 3</a>
-      <button class="submenu-toggle" aria-expanded="false"></button>
-
-      <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-      </ul>
-    </li>
-
-    <li class="menu-item-has-children">
-      <a href="#">Link 43</a>
-      <button class="submenu-toggle" aria-expanded="false"></button>
-
-      <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-```
-
 ### Initialize
 
 ```js
@@ -62,16 +21,17 @@ new MenuToggle({});
 `DisclosureNav` parameters:
 
 - `menuSelector` - CSS selector for the menu `<ul>`, default: `#menu > ul`
-- `menuItemSelector` - CSS selector for top level nav items, default: `li.has-submenu`
+- `menuItemSelector` - CSS selector for top level nav items, default: `li.menu-item-has-children`
 - `menuLinkSelector` - CSS selector top level links, default: `a`
 - `submenuSelector` - CSS selector for submenus, default: `ul`
-- `submenuToggleSelector` - CSS selector for submenu toggle buttons, default: `button`
+- `submenuToggleIcon` - SVG for submenu toggle button, default: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg>`
 
 `Menu Toggle` parameters:
 
-- `menuContainerSelector` - CSS selector for the , default: '#menu > ul',
-- `toggleButtonSelector` - CSS selector for the menu toggle button, default: `"#menu-toggle",
-- `menuContainerOpenClass` - CSS selector used to indicate if the menu container is open, default: 'is-active',
+- `menuContainerSelector` - CSS selector for the container that will be toggled when clicking the menu button, default: `#menu`,
+- `menuContainerOpenClass` - CSS selector used to indicate if the menu container is open, default: `is-active`,
+- `toggleButtonLabel` - Text to display on the mobile menu toggle button, default: `Menu`,
+- `toggleButtonIcon` - SVG icon for submenu toggle button, default: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 160h352M80 256h352M80 352h352"/></svg>`,
 
 ### WordPress Example
 
@@ -90,10 +50,6 @@ new MenuToggle({
 #### CSS
   - Find & replace `#menu` with the menuSelector: `#site-navigation > ul`
 
-#### Templates
-  - Add menu toggle button
-  - Add submenu toggle buttons
-
 ### Drupal Example
 #### JS
 ```js
@@ -110,10 +66,6 @@ new MenuToggle({
   - Find & replace `#menu` with the menuSelector: `#block-navigation #menu`
   - Find & replace `li.menu-item-has-children` with the menuSelector: `li.menu-item--expanded`
 
-#### Templates
-  - Add menu toggle button
-  - Add submenu toggle buttons
-
 ## Limitations
 
-- Nested submenus aren't supported, only one submenu will work.
+- Nested submenus aren't supported, only one submenu level will work.

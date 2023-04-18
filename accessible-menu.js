@@ -23,7 +23,7 @@ class DisclosureNav {
     menuItemSelector = "li.menu-item-has-children",
     menuLinkSelector = "a",
     submenuSelector = "ul",
-    submenuToggleSelector = "button",
+    submenuToggleIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg>',
   }) {
     this.rootNode = document.querySelector(menuSelector);
     this.controlledNodes = [];
@@ -31,38 +31,38 @@ class DisclosureNav {
     this.useArrowKeys = true;
     this.topLevelNodes = [
       ...this.rootNode.querySelectorAll(
-        `:scope > ${menuItemSelector} > ${menuLinkSelector}, :scope > ${menuItemSelector} > ${submenuToggleSelector}`
+        `:scope > ${menuItemSelector} > ${menuLinkSelector}`
       ),
     ];
 
     this.topLevelNodes.forEach((node) => {
       // handle button + menu
-      if (node.matches(submenuToggleSelector)) {
-        const menu = node.parentNode.querySelector(submenuSelector);
+      const menu = node.parentNode.querySelector(submenuSelector);
 
-        if (menu) {
-          const uniqueID = this.uniqueID();
+      if (menu) {
+        const uniqueID = this.uniqueID();
 
-          // save ref controlled menu
-          this.controlledNodes.push(menu);
+        // save ref controlled menu
+        this.controlledNodes.push(menu);
 
-          // Link submenu & submenu toggle with aria-controls
-          menu.setAttribute('id', uniqueID);
-          node.setAttribute('aria-controls', uniqueID);
+        // dynamically add submenu toggle button
+        let submenuToggle = document.createElement('button');
+        submenuToggle.innerHTML = `<button aria-label="${node.textContent}" class="submenu-toggle" aria-expanded="false" aria-controls="${uniqueID}">${submenuToggleIcon}</button>`;
+        submenuToggle = submenuToggle.firstElementChild;
+        node.insertAdjacentElement('afterend', submenuToggle);
 
-          // collapse menus
-          node.setAttribute('aria-expanded', 'false');
-          this.toggleMenu(menu, false);
+        // attach submenu toggle button listeners
+        submenuToggle.addEventListener('click', this.onButtonClick.bind(this));
+        submenuToggle.addEventListener('keydown', this.onButtonKeyDown.bind(this));
 
-          // attach event listeners
-          menu.addEventListener('keydown', this.onMenuKeyDown.bind(this));
-          node.addEventListener('click', this.onButtonClick.bind(this));
-          node.addEventListener('keydown', this.onButtonKeyDown.bind(this));
-        }
-      }
-      // handle links
-      else {
-        this.controlledNodes.push(null);
+        // Link submenu & submenu toggle with aria-controls
+        menu.setAttribute('id', uniqueID);
+
+        // collapse menus
+        this.toggleMenu(menu, false);
+
+        // attach link event listeners
+        menu.addEventListener('keydown', this.onMenuKeyDown.bind(this));
         node.addEventListener('keydown', this.onLinkKeyDown.bind(this));
         node.addEventListener('click', this.onLinkClick.bind(this));
       }
@@ -118,7 +118,7 @@ class DisclosureNav {
 
   onButtonClick(event) {
     var button = event.target;
-    var buttonIndex = this.topLevelNodes.indexOf(button);
+    var buttonIndex = this.topLevelNodes.indexOf(button.previousSibling);
     var buttonExpanded = button.getAttribute('aria-expanded') === 'true';
     this.toggleExpand(buttonIndex, !buttonExpanded);
   }
@@ -201,7 +201,7 @@ class DisclosureNav {
     // handle menu at called index
     if (this.topLevelNodes[index]) {
       this.openIndex = expanded ? index : null;
-      this.topLevelNodes[index].setAttribute('aria-expanded', expanded);
+      this.topLevelNodes[index].nextSibling.setAttribute('aria-expanded', expanded);
       this.toggleMenu(this.controlledNodes[index], expanded);
     }
   }
@@ -221,14 +221,22 @@ class MenuToggle {
   constructor({
     menuContainerSelector = '#menu',
     menuContainerOpenClass = 'is-active',
-    toggleButtonSelector = "#menu-toggle",
+    toggleButtonLabel = 'Menu',
+    toggleButtonIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 160h352M80 256h352M80 352h352"/></svg>',
+    toggleButtonContent = `${toggleButtonIcon} <div class="menu-toggle--label">${toggleButtonLabel}</div>`,
   }) {
 
+    // dynamically create menu toggle button
+    this.toggleButton = document.createElement('button');
+    this.toggleButton.innerHTML = `<button id="menu-toggle" class="menu-toggle--button" aria-expanded="false" aria-controls="${menuContainerSelector}">${toggleButtonContent}</button>`;
+    this.toggleButton = this.toggleButton.firstElementChild;
+    this.toggleButton.addEventListener('click', this.onClick.bind(this));
+
+    // initialize menu container & add menu toggle button to the DOM
     this.menuContainerOpenClass = menuContainerOpenClass;
     this.container = document.querySelector(menuContainerSelector);
-    this.toggleButton = document.querySelector(toggleButtonSelector);
+    this.container.insertAdjacentElement('afterbegin', this.toggleButton);
 
-    this.toggleButton.addEventListener('click', this.onClick.bind(this));
 
     // Set aria-controls attribute.
     if (this.container.id) {
