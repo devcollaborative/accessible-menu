@@ -109,13 +109,21 @@ $main-nav-breakpoint: 768px;
 /**
  * Mobile menu toggle
  */
-#menu-toggle {
+.menu-toggle--button {
   border: none;
   background-color: transparent;
   cursor: pointer;
   text-align: center;
 
   @media (min-width: $main-nav-breakpoint) {
+    display: none;
+  }
+
+  &[aria-expanded="false"] .menu-toggle--button__close {
+    display: none;
+  }
+
+  &[aria-expanded="true"] .menu-toggle--button__open {
     display: none;
   }
 }

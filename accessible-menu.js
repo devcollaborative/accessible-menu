@@ -222,8 +222,9 @@ class MenuToggle {
     menuContainerSelector = '#menu',
     menuContainerOpenClass = 'is-active',
     toggleButtonLabel = 'Menu',
-    toggleButtonIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 160h352M80 256h352M80 352h352"/></svg>',
-    toggleButtonContent = `${toggleButtonIcon} <div class="menu-toggle--label">${toggleButtonLabel}</div>`,
+    toggleButtonOpenIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 160h352M80 256h352M80 352h352"/></svg>',
+    toggleButtonCloseIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>',
+    toggleButtonContent = `<span class="menu-toggle--button__open">${toggleButtonOpenIcon}</span> <span class="menu-toggle--button__close">${toggleButtonCloseIcon}</span> <div class="menu-toggle--label">${toggleButtonLabel}</div>`,
     mobileBreakpoint = '768px',
   }) {
 

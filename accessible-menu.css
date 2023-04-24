@@ -99,7 +99,7 @@
 /**
  * Mobile menu toggle
  */
-#menu-toggle {
+.menu-toggle--button {
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -107,7 +107,15 @@
 }
 
 @media (min-width: 768px) {
-  #menu-toggle {
+  .menu-toggle--button {
     display: none;
   }
+}
+
+.menu-toggle--button[aria-expanded="false"] .menu-toggle--button__close {
+  display: none;
+}
+
+.menu-toggle--button[aria-expanded="true"] .menu-toggle--button__open {
+  display: none;
 }
