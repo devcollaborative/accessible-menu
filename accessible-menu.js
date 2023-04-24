@@ -252,17 +252,14 @@ class MenuToggle {
   }
 
   onClick() {
-    if (this.toggleButton.getAttribute('aria-expanded') === 'true') {
-      this.toggleButton.setAttribute('aria-expanded', 'false');
-      this.container.classList.remove(this.menuContainerOpenClass);
-    } else {
-      this.toggleButton.setAttribute('aria-expanded', 'true');
-      this.container.classList.add(this.menuContainerOpenClass);
-    }
+    document.body.classList.toggle(`menu-${this.menuContainerOpenClass}`);
+    this.container.classList.toggle(this.menuContainerOpenClass);
+    this.toggleButton.setAttribute('aria-expanded', this.toggleButton.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
   }
 
   handleBreakpoint(e) {
     if (e.matches) {
+      document.body.classList.remove(`menu-${this.menuContainerOpenClass}`);
       this.container.classList.remove(this.menuContainerOpenClass);
       this.toggleButton.setAttribute('aria-expanded', 'false');
     }
