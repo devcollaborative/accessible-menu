@@ -224,6 +224,7 @@ class MenuToggle {
     toggleButtonLabel = 'Menu',
     toggleButtonIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 160h352M80 256h352M80 352h352"/></svg>',
     toggleButtonContent = `${toggleButtonIcon} <div class="menu-toggle--label">${toggleButtonLabel}</div>`,
+    mobileBreakpoint = '768px',
   }) {
 
     // dynamically create menu toggle button
@@ -245,6 +246,9 @@ class MenuToggle {
       this.container.setAttribute('id', 'menu-toggle-container');
       this.toggleButton.setAttribute('aria-controls', 'menu-toggle-container');
     }
+
+    // close mobile menu when screen is larger than mobile breakpoint
+    matchMedia(`(min-width: ${mobileBreakpoint})`).addEventListener('change', this.handleBreakpoint.bind(this));
   }
 
   onClick() {
@@ -254,6 +258,13 @@ class MenuToggle {
     } else {
       this.toggleButton.setAttribute('aria-expanded', 'true');
       this.container.classList.add(this.menuContainerOpenClass);
+    }
+  }
+
+  handleBreakpoint(e) {
+    if (e.matches) {
+      this.container.classList.remove(this.menuContainerOpenClass);
+      this.toggleButton.setAttribute('aria-expanded', 'false');
     }
   }
 }

@@ -28,6 +28,7 @@ new MenuToggle({});
 
 `Menu Toggle` parameters:
 
+- `mobileBreakpoint` - Set breakpoint for the menu, default: `768px`
 - `menuContainerSelector` - CSS selector for the container that will be toggled when clicking the menu button, default: `#menu`,
 - `menuContainerOpenClass` - CSS selector used to indicate if the menu container is open, default: `is-active`,
 - `toggleButtonLabel` - Text to display on the mobile menu toggle button, default: `Menu`,
